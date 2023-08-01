@@ -1,3 +1,4 @@
+const { error } = require("console");
 const http = require("http");
 
 const server = http
@@ -12,4 +13,9 @@ const server = http
 
 server.on("listening", () => {
   console.log("8080포트에서 서버 연결 중..");
+});
+
+// Error Event Listener
+server.on("error", () => {
+  console.error(error);
 });
