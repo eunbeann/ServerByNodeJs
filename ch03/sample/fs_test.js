@@ -5,11 +5,13 @@ const fs = require("fs").promises;
 http
   .createServer(async (req, res) => {
     try {
-      const f = await fs.readFile(`./fs_test.html`);
+      const f = await fs.readFile("./fs_test.html");
       res.writeHead(200, { "Content-Type": "text.html; charset=utf-8" });
-      res.end(f);
+      // 200이면 요청 성공
+      res.end(f); // 요청 종료
     } catch (err) {
-      console.error(err);
+      // 오류 처리
+      console.error(err); //요청에 싷패했을 경우 오류 출력
       res.writeHead(500, { "Content-Type": " text.html; charset=utf-8 " });
       // 500이면 서버 오류 발생
       res.end(err.message); // 오류 메시지와 함게 요청 종료
