@@ -9,3 +9,9 @@ const app = express();
 
 //포트 설정
 app.set("port", process.env.PORT || 8080);
+
+// 가상 데이터
+let fakeUser = {
+  username: "test@test.com",
+  password: "test@1234",
+};
