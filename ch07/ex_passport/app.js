@@ -15,3 +15,20 @@ let fakeUser = {
   username: "test@test.com",
   password: "test@1234",
 };
+
+// 공통 미들웨어
+app.use(morgan("dev"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser("passportExample"));
+app.use(
+  session({
+    resave: false,
+    saveUninitialized: false,
+    secret: "passportExample",
+    cookie: {
+      httpOnly: true,
+      secure: false,
+    },
+  })
+);
