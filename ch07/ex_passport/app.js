@@ -57,3 +57,28 @@ passport.use(
     }
   })
 );
+
+// 라우터 설정
+app.get("/", (req, res) => {
+  if (!req.user) {
+    res.sendFile(__dirname + "/index.html");
+  } else {
+    const user = req.user.username;
+    const html = `
+    <!DOCTYPE html>
+    <html lang = "ko">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title> Document </title>
+    </head>
+    <body>
+      <p>${user}님 안녕하세요! </P>
+      <button type="button" onclick="location.href='/logout'">
+      Log Out </button>
+    </body>
+    </html>
+    `;
+    res.send(html);
+  }
+});
