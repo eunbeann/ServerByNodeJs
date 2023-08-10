@@ -57,11 +57,14 @@ passport.use(
       // fakeUser값과 동일한지 처리
       if (password === fakeUser.username) {
         // done(오류 여부, 결과 값, 실패했을 경우 실패 정보)
+        console.log("loginDone");
         return done(null, fakeUser);
       } else {
+        console.log("password incorrect");
         return done(null, false, { message: "password incorrect" });
       }
     } else {
+      console.log("username incorrect");
       return done(null, false, { message: " username incorrect" });
     }
   })
@@ -101,8 +104,8 @@ app.post(
   //passport.authenticate() 함수로 local 전략 쓴다고 첫 번째 인자로 알려줌
   // 로그인 실패했을 경우 "/login" 라우터로 이동
   passport.authenticate("local", { failureRedirect: "/" }),
+  // 로그인 성공시 res.sne()로 로그인 성공 메시지 띄워주기
   function (req, res) {
-    // 로그인 성공시 res.sne()로 로그인 성공 메시지 띄워주기
     res.send("Login success...!");
   }
 );
