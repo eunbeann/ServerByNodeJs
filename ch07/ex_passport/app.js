@@ -82,3 +82,32 @@ app.get("/", (req, res) => {
     res.send(html);
   }
 });
+
+// passport Login : strategy-Local
+// Authenticate Request
+app.post(
+  "/login",
+  passport.authenticate("local", { failureRedirect: "/" }),
+  function (req, res) {
+    res.send("Login success...!");
+  }
+);
+
+app.get("/logout", function (req, res) {
+  req.logout();
+  res.redirect("/");
+});
+
+// 404 오류 처리
+
+app.use((req, res, next) => {
+  res.locals.message = err.message;
+  res.locals.error = process.env.NODE_ENV !== "development" ? err : {};
+  res.status(err.status || 500);
+  res.send("error Occurred");
+});
+
+// 서버와 포트 연결
+app.listen(app.get("port"), () => {
+  console.log(app.get("port"), "번 포트에서 서버 실행 중...");
+});
