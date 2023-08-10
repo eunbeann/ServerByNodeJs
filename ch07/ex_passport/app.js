@@ -116,6 +116,13 @@ app.get("/logout", function (req, res) {
 
 // 404 오류 처리
 app.use((req, res, next) => {
+  const error = new Error(`${req.method} ${req.url} 해당 주소가 없습니다.`);
+  error.status = 404;
+  next(error);
+});
+
+// 오류 처리 미들웨어
+app.use((err, req, res, next) => {
   res.locals.message = err.message;
   res.locals.error = process.env.NODE_ENV !== "development" ? err : {};
   res.status(err.status || 500);
