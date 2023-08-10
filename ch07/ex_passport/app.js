@@ -45,9 +45,13 @@ passport.deserializeUser(function (id, done) {
 });
 
 passport.use(
+  // Localstrategy 인스턴스 생성
   new Localstrategy(function (username, password, done) {
+    // 콜백 함수로 사용자가 등록한 username, password 검사
     if (username === fakeUser.username) {
+      // fakeUser값과 동일한지 처리
       if (password === fakeUser.username) {
+        // done(오류 여부, 결과 값, 실패했을 경우 실패 정보)
         return done(null, fakeUser);
       } else {
         return done(null, false, { message: "password incorrect" });
@@ -60,8 +64,10 @@ passport.use(
 
 // 라우터 설정
 app.get("/", (req, res) => {
+  // 로그인 되어 있지 않으면 로그인 화면 index.html 보여주기
   if (!req.user) {
     res.sendFile(__dirname + "/index.html");
+    // 로그인 되어있다면 req.user에서 username을 user 변수에 넣고 사용자의 이름과 환영 메시지 그리고 로그아웃 버튼을 응답으로 보내주기
   } else {
     const user = req.user.username;
     const html = `
@@ -87,19 +93,23 @@ app.get("/", (req, res) => {
 // Authenticate Request
 app.post(
   "/login",
+  //passport.authenticate() 함수로 local 전략 쓴다고 첫 번째 인자로 알려줌
+  // 로그인 실패했을 경우 "/login" 라우터로 이동
   passport.authenticate("local", { failureRedirect: "/" }),
   function (req, res) {
+    // 로그인 성공시 res.sne()로 로그인 성공 메시지 띄워주기
     res.send("Login success...!");
   }
 );
 
 app.get("/logout", function (req, res) {
+  // 로그아웃은 passport가 알아서 Req 객체에 logout() 메서드를 넣어주어 간단한 구현 가능
   req.logout();
+  // req.session에 담긴 사용자의 정보를 삭제하고 다시 '/' 루트 페이지로 리다이렉트하게 됨.
   res.redirect("/");
 });
 
 // 404 오류 처리
-
 app.use((req, res, next) => {
   res.locals.message = err.message;
   res.locals.error = process.env.NODE_ENV !== "development" ? err : {};
